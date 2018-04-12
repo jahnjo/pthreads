@@ -26,7 +26,7 @@ void* jerryTurn(void* arg) {
             pthread_exit(0);
         }
         (*jerryArgs).stonesAvailable -= 1;
-        printf("Jerry picks up 1 stone, %d left\n\n",(*jerryArgs).stonesAvailable);
+        printf("Jerry picks up 1 stone, %d left\n",(*jerryArgs).stonesAvailable);
         (*jerryArgs).turn = 1;
         pthread_cond_signal(&(*jerryArgs).tom);
         //sleep(1);
@@ -55,9 +55,9 @@ void* tomTurn(void* arg) {
         stones = rand() % 4 + 1;
         if ((*tomArgs).stonesAvailable >= stones) {
             (*tomArgs).stonesAvailable -= stones;
-            printf("Tom picks up %d stones, %d left\n\n",stones, (*tomArgs).stonesAvailable);
+            printf("Tom picks up %d stones, %d left\n",stones, (*tomArgs).stonesAvailable);
         } else if ((*tomArgs).stonesAvailable < stones) {
-            printf("Tom picks up %d stones, %d left\n\n",(*tomArgs).stonesAvailable, 0);
+            printf("Tom picks up %d stones, %d left\n",(*tomArgs).stonesAvailable, 0);
             (*tomArgs).stonesAvailable -= (*tomArgs).stonesAvailable;
         }
         (*tomArgs).turn = 0;
@@ -75,7 +75,8 @@ int main(int argc, char *argv[]) {
     struct threadArgs *share;
     share = malloc(sizeof(struct threadArgs));
     srand(time(NULL));
-    (*share).stonesAvailable = rand() % 20 + 80;
+    (*share).stonesAvailable = rand() % 60 + 20;
+    int g =  (*share).stonesAvailable;
 
     printf("amount of stones: %d\n", (*share).stonesAvailable);
 
@@ -93,6 +94,8 @@ int main(int argc, char *argv[]) {
 
     pthread_join(jerryID, NULL);
     pthread_join(tomID, NULL);
+
+    //printf("amount of stones: %d\n",g);
     
 
 }
